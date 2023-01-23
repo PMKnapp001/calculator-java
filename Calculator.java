@@ -44,28 +44,21 @@ public class Calculator {
       }
 
       // Creates string array by splitting input on empty spaces
-      String[] tokens = input.split(" ");
+      String[] tokens = tokenize(input);
 
       // checks first index for operator, quits program if "q"
-      String operator = tokens[0];
-      if (operator.toLowerCase().equals("q")) {
+      String operator = extractOperator(tokens);
+      if (shouldQuit(operator)) {
         System.out.println("Quitting the program. Goodbye!");
         break;
       }
 
       // Declares variables
-      Float num1, num2;
+      Float[] nums;
 
       // Tries to convert strings in array to floats
       try {
-        num1 = Float.parseFloat(tokens[1]);
-
-        //checks for second operand, sets to 0.0 if not
-        if (tokens.length >= 3) {
-          num2 = Float.parseFloat(tokens[2]);
-        } else {
-          num2 = 0f;
-        }
+        nums = extractNums(tokens);
 
         // Validates for no numbers being entered
       } catch (ArrayIndexOutOfBoundsException e) {
@@ -79,43 +72,7 @@ public class Calculator {
       }
 
       // declares result variable
-      Float result;
-
-      // switch to call the appropriate arithmetic operation functions
-      switch (operator) {
-        case "+":
-          result = Arithmetic.add(num1, num2);
-          break;
-
-        case "-":
-          result = Arithmetic.subtract(num1, num2);
-          break;  
-
-        case "*":
-          result = Arithmetic.multiply(num1, num2);
-          break;
-
-        case "/":
-          result = Arithmetic.division(num1, num2);
-          break;
-
-        case "%":
-          result = Arithmetic.modulo(num1, num2);
-          break;
-
-        case "square":
-          result = Arithmetic.square(num1);
-          break;
-
-        case "cube":
-          result = Arithmetic.cube(num1);
-          break;
-          
-        // validates if operation is supported
-        default:
-          result = null;
-          break;
-      }
+      Float result = evaluate(operator, nums[0], nums[1]);
 
       // displays results of operation, results in error message if operation not supported
       if (result == null) {
@@ -140,5 +97,69 @@ public class Calculator {
       System.out.println("IOException: " + e);
     }
     return inputLine;
+  }
+
+  static String[] tokenize(String input) {
+    return input.split(" ");
+  }
+
+  static String extractOperator(String[] tokens) {
+    return tokens[0];
+  }
+
+  static boolean shouldQuit(String operator) {
+    return operator.toLowerCase().equals("q");
+  }
+
+  static Float[] extractNums(String[] tokens) {
+    Float[] nums = new Float[2];
+    nums[0] = Float.parseFloat(tokens[1]);
+
+    if (tokens.length >= 3) {
+      nums[1] = Float.parseFloat(tokens[2]);
+    } else {
+      nums[1] = 0f;
+    }
+    return nums;
+  }
+
+  static Float evaluate(String operator, Float num1, Float num2) {
+    Float result;
+    switch (operator) {
+      case "+":
+        result = Arithmetic.add(num1, num2);
+        break;
+
+      case "-":
+        result = Arithmetic.subtract(num1, num2);
+        break;  
+
+      case "*":
+        result = Arithmetic.multiply(num1, num2);
+        break;
+
+      case "/":
+        result = Arithmetic.division(num1, num2);
+        break;
+
+      case "%":
+        result = Arithmetic.modulo(num1, num2);
+        break;
+
+      case "square":
+        result = Arithmetic.square(num1);
+        break;
+
+      case "cube":
+        result = Arithmetic.cube(num1);
+        break;
+        
+      // validates if operation is supported
+      default:
+        result = null;
+        break;
+    }
+
+    return result;
   }
 }
