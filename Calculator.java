@@ -5,6 +5,30 @@ class Arithmetic {
   public static float add(float num1, float num2) {
     return num1 + num2;
   }
+
+  public static float subtract(float num1, float num2) {
+    return num1 - num2;
+  }
+
+  public static float multiply(float num1, float num2) {
+    return num1 * num2;
+  }
+
+  public static float division(float num1, float num2) {
+    return num1 / num2;
+  }
+  
+  public static float modulo(float num1, float num2) {
+    return num1 % num2;
+  }
+
+  public static float square(float num1) {
+    return num1 * num1;
+  }
+
+  public static float cube(float num1) {
+    return (float) Math.pow(num1, 3); 
+  }
 }
 
 /** The calculator program. */
@@ -63,6 +87,30 @@ public class Calculator {
           result = Arithmetic.add(num1, num2);
           break;
 
+        case "-":
+          result = Arithmetic.subtract(num1, num2);
+          break;  
+
+        case "*":
+          result = Arithmetic.multiply(num1, num2);
+          break;
+
+        case "/":
+          result = Arithmetic.division(num1, num2);
+          break;
+
+        case "%":
+          result = Arithmetic.modulo(num1, num2);
+          break;
+
+        case "square":
+          result = Arithmetic.square(num1);
+          break;
+
+        case "cube":
+          result = Arithmetic.cube(num1);
+          break;
+          
         // validates if operation is supported
         default:
           result = null;
